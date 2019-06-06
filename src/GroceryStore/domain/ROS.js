@@ -1,4 +1,5 @@
 const { Product } = require("./Product")
+const { ProductName } = require("./ProductName")
 
 class ROS {
   constructor(productAndAmountList) {
@@ -12,7 +13,7 @@ class ROS {
       .filter(e => e.length === 3)
       .map(f => f.map(c => c.trim()))
       .map(f => ({
-        name: f[0],
+        name: new ProductName(f[0]),
         amount: Number(f[1]),
         price: Number(f[2]),
       }))
@@ -25,14 +26,11 @@ class ROS {
   }
 
   calculateTotalPrice() {
-    let sum = 0
-
-    for (const productAndAmount of this.productAndAmountList) {
-      console.log(productAndAmount)
-      sum += productAndAmount.product.getPriceForAmount(productAndAmount.amount)
-    }
-
-    return sum
+    return this.productAndAmountList.reduce(
+      (totalPrice, { product, amount }) =>
+        totalPrice + product.getPriceForAmount(amount),
+      0,
+    )
   }
 }
 

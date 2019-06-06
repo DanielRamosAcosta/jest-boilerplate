@@ -1,18 +1,14 @@
-const { SumTotalROS } = require("../GroceryStore/application/sumTotalROS")
 const {
-  ROSReaderLibraryFS,
-} = require("../GroceryStore/infrastructure/ROSReaderLibraryFS")
-const { SumTotalROSController } = require("./controllers/sumTotalROSController")
+  sumTotalRosFactory: createSumTotalROSController,
+} = require("./factories/createSumTotalROSController")
 
 const command = process.argv[2]
 
 if (command === "SumROS") {
-  const rosReaderLibraryFS = new ROSReaderLibraryFS()
-  const sumTotalROS = new SumTotalROS(rosReaderLibraryFS)
-  const sumTotalROSController = new SumTotalROSController(sumTotalROS)
+  const sumTotalROSController = createSumTotalROSController()
 
   sumTotalROSController.execute()
   process.exit()
 }
 
-console.log(`Unknown command ${command}`)
+console.error(`Unknown command ${command}`)
